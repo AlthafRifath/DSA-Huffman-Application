@@ -12,23 +12,40 @@ public class HuffmanTree {
     }
 
     public void buildTree(int[] charFrequencies) {
-        PriorityQueue<HuffmanNode> queue = new PriorityQueue<>();
+        PriorityQueue<HuffmanNode> PrimaryQueue = new PriorityQueue<>();
+        PriorityQueue<HuffmanNode> SecondaryQueue = new PriorityQueue<>();
+
         for (char i = 0; i < 256; i++) {
             if (charFrequencies[i] > 0) {
-                queue.add(new HuffmanNode(i, charFrequencies[i]));
+                PrimaryQueue.add(new HuffmanNode(i, charFrequencies[i]));
             }
         }
 
-        while (queue.size() > 1) {
-            HuffmanNode left = queue.poll();
-            HuffmanNode right = queue.poll();
-            HuffmanNode sum = new HuffmanNode('-', left.frequency + right.frequency);
-            sum.left = left;
-            sum.right = right;
-            queue.add(sum);
+        while (PrimaryQueue.size() + SecondaryQueue.size() > 1) {
+            HuffmanNode first = extractMin(PrimaryQueue, SecondaryQueue);
+            HuffmanNode second = extractMin(PrimaryQueue, SecondaryQueue);
+
+            HuffmanNode merged = new HuffmanNode('-', first.frequency + second.frequency);
+            merged.left = first;
+            merged.right = second;
+            SecondaryQueue.add(merged);
         }
-        root = queue.poll();
+        root = SecondaryQueue.poll();
         generateCodes(root, "");
+    }
+
+    private HuffmanNode extractMin(PriorityQueue<HuffmanNode> PrimaryQueue, PriorityQueue<HuffmanNode> SecondaryQueue) {
+        if (PrimaryQueue.isEmpty()) {
+            return SecondaryQueue.poll();
+        } else if (SecondaryQueue.isEmpty()) {
+            return PrimaryQueue.poll();
+        } else {
+            if (PrimaryQueue.peek().frequency < SecondaryQueue.peek().frequency) {
+                return PrimaryQueue.poll();
+            } else {
+                return SecondaryQueue.poll();
+            }
+        }
     }
 
     private void generateCodes(HuffmanNode node, String s) {
