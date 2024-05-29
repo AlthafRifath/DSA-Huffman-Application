@@ -9,7 +9,7 @@ public class HuffmanCoder {
     }
 
     public String encode(String data) {
-        Map<Character, String> huffmanCodes = huffmanTree.getCodes();
+        MyMap<Character, String> huffmanCodes = huffmanTree.getCodes();
         StringBuilder encodedData = new StringBuilder();
         for (char c : data.toCharArray()) {
             encodedData.append(huffmanCodes.get(c));

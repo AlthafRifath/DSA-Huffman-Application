@@ -1,19 +1,15 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
-
 public class HuffmanTree {
 
     private HuffmanNode root;
-    private Map<Character, String> huffmanCodes;
+    private MyMap<Character, String> huffmanCodes;
 
     public HuffmanTree() {
-        this.huffmanCodes = new HashMap<>();
+        this.huffmanCodes = new MyMap<>();
     }
 
     public void buildTree(int[] charFrequencies) {
-        PriorityQueue<HuffmanNode> PrimaryQueue = new PriorityQueue<>();
-        PriorityQueue<HuffmanNode> SecondaryQueue = new PriorityQueue<>();
+        MyPriorityQueue<HuffmanNode> PrimaryQueue = new MyPriorityQueue<>();
+        MyPriorityQueue<HuffmanNode> SecondaryQueue = new MyPriorityQueue<>();
 
         for (char i = 0; i < 256; i++) {
             if (charFrequencies[i] > 0) {
@@ -34,10 +30,10 @@ public class HuffmanTree {
         generateCodes(root, "");
     }
 
-    private HuffmanNode extractMin(PriorityQueue<HuffmanNode> PrimaryQueue, PriorityQueue<HuffmanNode> SecondaryQueue) {
-        if (PrimaryQueue.isEmpty()) {
+    private HuffmanNode extractMin(MyPriorityQueue<HuffmanNode> PrimaryQueue, MyPriorityQueue<HuffmanNode> SecondaryQueue) {
+        if (PrimaryQueue.size() == 0) {
             return SecondaryQueue.poll();
-        } else if (SecondaryQueue.isEmpty()) {
+        } else if (SecondaryQueue.size() == 0) {
             return PrimaryQueue.poll();
         } else {
             if (PrimaryQueue.peek().frequency < SecondaryQueue.peek().frequency) {
@@ -58,7 +54,7 @@ public class HuffmanTree {
         }
     }
 
-    public Map<Character, String> getCodes() {
+    public MyMap<Character, String> getCodes() {
         return huffmanCodes;
     }
 
