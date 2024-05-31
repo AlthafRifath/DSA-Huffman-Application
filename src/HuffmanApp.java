@@ -29,5 +29,14 @@ public class HuffmanApp {
 
         String decodedData = huffmanCoder.decode(encodedData);
         System.out.println("Decoded Data: " + decodedData);
+
+        MyMap<Character, String> huffmanCodes = huffmanTree.getCodes();
+        System.out.println("\nHuffman Codes Data Dictionary: ");
+        for (char c : input.toCharArray()) {
+            if (huffmanCodes.get(c) != null) {
+                System.out.println(c + ": " + huffmanCodes.get(c));
+                huffmanCodes.put(c, null);
+            }
+        }
     }
 }
